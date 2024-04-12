@@ -5,8 +5,8 @@ from mne import Info, create_info
 from mne.io.array import RawArray
 from pylsl import StreamInlet, resolve_stream
 
-from config import SRATE
-
+SRATE = 256
+duration = 10
 
 def get_info() -> Info:
     ch_names = ['AF3', 'F7', 'F3', 'FC5', 'T7', 'P7',
@@ -30,8 +30,10 @@ def main():
     inlet = StreamInlet(streams[0])
 
     buffer = []
+    print("START")
     while True:
-        if len(buffer) == 128 * 5:  # wait 5 seconds
+        if len(buffer) == (SRATE * duration + 1):  # wait n seconds
+            print("END")
             break
 
         sample, _ = inlet.pull_sample()
@@ -42,7 +44,7 @@ def main():
     info = get_info()
     raw = RawArray(np.array(buffer).T, info)
 
-    raw.save("data_{}_raw.fif".format(datetime.now()))
+    raw.save("./samples/data_{}_raw.fif".format(round(datetime.now().timestamp()*1000000)))
 
 
 if __name__ == '__main__':

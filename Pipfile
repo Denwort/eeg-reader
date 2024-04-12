@@ -7,6 +7,8 @@ name = "pypi"
 hidapi = "*"
 pycryptodome = "*"
 pylsl = "*"
+mne = "*"
+numpy = "*"
 
 [dev-packages]
 pyshark = "*"
